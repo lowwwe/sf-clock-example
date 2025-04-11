@@ -27,14 +27,15 @@ private:
 	void processKeys(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
 	void render();
-	
+	std::string getElapsedTime();
 	void setupFontAndText();
 
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
 	sf::Text m_timeMessage; // text used for message on screen
-	
+	sf::Clock m_timer; // clock ued to keep track of time
+	sf::Clock m_stopWatch; // clock used for delays
 	bool m_exitGame; // control exiting game
 
 };

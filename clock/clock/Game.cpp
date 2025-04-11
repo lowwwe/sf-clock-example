@@ -109,6 +109,7 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		m_window.close();
 	}
+	
 }
 
 /// <summary>
@@ -117,8 +118,28 @@ void Game::update(sf::Time t_deltaTime)
 void Game::render()
 {
 	m_window.clear(sf::Color{90,110,200,255});
+	m_timeMessage.setString(getElapsedTime()); // update the time message to the current time
 	m_window.draw(m_timeMessage);	
 	m_window.display();
+}
+
+std::string Game::getElapsedTime()
+{
+	std::string remaining;
+	int seconds;
+	int minutes;
+	seconds = static_cast<int>( m_timer.getElapsedTime().asSeconds());
+	minutes = seconds / 60;
+	seconds = seconds % 60;
+	if (seconds > 9) // add leading zero
+	{
+		remaining = "Time elasped -> " + std::to_string(minutes) + ":" + std::to_string(seconds);
+	}
+	else
+	{
+		remaining = "Time elapsed -> " + std::to_string(minutes) + ":0" + std::to_string(seconds);
+	}
+	return remaining;
 }
 
 /// <summary>
