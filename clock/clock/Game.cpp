@@ -93,6 +93,7 @@ void Game::processKeys(sf::Event t_event)
 	{
 		m_exitGame = true;
 	}
+	// only digits from the top of keyboard
 	if (sf::Keyboard::Num0 <= t_event.key.code && sf::Keyboard::Num9 >= t_event.key.code && !m_alarmSet)
 	{
 		m_alarmTime = static_cast<float>(t_event.key.code - sf::Keyboard::Num0);
