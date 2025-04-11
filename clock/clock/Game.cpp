@@ -93,6 +93,12 @@ void Game::processKeys(sf::Event t_event)
 	{
 		m_exitGame = true;
 	}
+	if (sf::Keyboard::Num0 <= t_event.key.code && sf::Keyboard::Num9 >= t_event.key.code && !m_alarmSet)
+	{
+		m_alarmTime = static_cast<float>(t_event.key.code - sf::Keyboard::Num0);
+		m_stopWatch.restart();
+		m_alarmSet = true;
+	}
 }
 
 /// <summary>
@@ -109,6 +115,13 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		m_window.close();
 	}
+	if (m_alarmSet)
+	{
+		if (m_stopWatch.getElapsedTime().asSeconds() > m_alarmTime)
+		{
+			m_alarmSet = false;
+		}
+	}
 	
 }
 
@@ -117,15 +130,33 @@ void Game::update(sf::Time t_deltaTime)
 /// </summary>
 void Game::render()
 {
-	m_window.clear(sf::Color{90,110,200,255});
+	m_window.clear(sf::Color{ 90,110,200,255 });
 	m_timeMessage.setString(getElapsedTime()); // update the time message to the current time
-	m_window.draw(m_timeMessage);	
+	m_window.draw(m_timeMessage);	// elapsed
+	m_timeMessage.move(sf::Vector2f{ 0.0f,40.0f });
+	m_timeMessage.setString(getRemainingTime(120));
+	m_window.draw(m_timeMessage); // remaining
+
+	m_timeMessage.move(sf::Vector2f{ 0.0f,40.0f });
+	if (m_alarmSet)
+	{
+		m_timeMessage.setString(std::to_string(static_cast<int>(m_alarmTime)) + " second timer active");
+	}
+	else
+	{
+		m_timeMessage.setString("Press a number on keyboard to set delay timer");
+	}
+	m_window.draw(m_timeMessage); // remaining
+	m_timeMessage.move(sf::Vector2f{ 0.0f,-40.0f }); // return to orignal location
+
+
+	m_timeMessage.move(sf::Vector2f{ 0.0f,-40.0f }); // return to orignal location
 	m_window.display();
 }
 
 std::string Game::getElapsedTime()
 {
-	std::string remaining;
+	std::string elapsed;
 	int seconds;
 	int minutes;
 	seconds = static_cast<int>( m_timer.getElapsedTime().asSeconds());
@@ -133,11 +164,30 @@ std::string Game::getElapsedTime()
 	seconds = seconds % 60;
 	if (seconds > 9) // add leading zero
 	{
-		remaining = "Time elasped -> " + std::to_string(minutes) + ":" + std::to_string(seconds);
+		elapsed = "Time elasped -> " + std::to_string(minutes) + ":" + std::to_string(seconds);
 	}
 	else
 	{
-		remaining = "Time elapsed -> " + std::to_string(minutes) + ":0" + std::to_string(seconds);
+		elapsed = "Time elapsed -> " + std::to_string(minutes) + ":0" + std::to_string(seconds);
+	}
+	return elapsed;
+}
+
+std::string Game::getRemainingTime(int t_duration)
+{
+	std::string remaining;
+	int seconds;
+	int minutes;
+	seconds = t_duration - static_cast<int>(m_timer.getElapsedTime().asSeconds());
+	minutes = seconds / 60;
+	seconds = seconds % 60;
+	if (seconds > 9) // add leading zero
+	{
+		remaining = "Time remaining -> " + std::to_string(minutes) + ":" + std::to_string(seconds);
+	}
+	else
+	{
+		remaining = "Time remaining -> " + std::to_string(minutes) + ":0" + std::to_string(seconds);
 	}
 	return remaining;
 }
