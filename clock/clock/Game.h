@@ -38,8 +38,8 @@ private:
 	sf::Clock m_timer; // clock ued to keep track of time
 	sf::Clock m_stopWatch; // clock used for delays
 	bool m_exitGame; // control exiting game
-	bool m_alarmSet{ false };
-	float m_alarmTime;
+	bool m_alarmSet{ false }; // true when waiting for alarm
+	float m_alarmTime; // duration of alarm timer
 };
 
 #endif // !GAME_HPP

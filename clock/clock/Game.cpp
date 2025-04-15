@@ -15,7 +15,7 @@
 /// load and setup thne image
 /// </summary>
 Game::Game() :
-	m_window{ sf::VideoMode{ 800U, 600U, 32U }, "SFML Game" },
+	m_window{ sf::VideoMode{ 800U, 600U, 32U }, "SFML Clock example" },
 	m_exitGame{false} //when true game will exit
 {
 	setupFontAndText(); // load font 
@@ -155,6 +155,11 @@ void Game::render()
 	m_window.display();
 }
 
+
+/// <summary>
+/// make a string for the elapsed time with minutes and leading zero for seconds
+/// </summary>
+/// <returns>elapsed time message</returns>
 std::string Game::getElapsedTime()
 {
 	std::string elapsed;
@@ -174,6 +179,11 @@ std::string Game::getElapsedTime()
 	return elapsed;
 }
 
+/// <summary>
+/// make a string for the remaining time with minutes and leading zero for seconds
+/// </summary>
+/// <param name="t_duration">total time in seconds</param>
+/// <returns>remaining time message</returns>
 std::string Game::getRemainingTime(int t_duration)
 {
 	std::string remaining;
